@@ -8,3 +8,4 @@ func cleanInput(text string) []string {
 	splitWords := strings.Fields(lowercase)	
 	return splitWords
 }
+
