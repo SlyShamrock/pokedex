@@ -1,12 +1,22 @@
 package main
 
-import "fmt"
-import "bufio"
-import "os"
+import (
+	"fmt"
+ 	"bufio"
+	"os"
+	"time"
+	"github.com/slyshamrock/pokedex/internal/pokecache"
+	"github.com/slyshamrock/pokedex/internal/pokeapi"	
+)
+
+
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := &locationConfig{}
+	cfg := &locationConfig{
+		cache: pokecache.NewCache(5 * time.Second),
+		pokedex: make(map[string]pokeapi.Pokemon),
+	}	
 	for ;; {
 		fmt.Printf("Pokedex > ")
 		scanner.Scan()
@@ -22,7 +32,7 @@ func main() {
 			fmt.Printf("Unknown command\n")
 			continue
 		}
-		err := value.callback(cfg)
+		err := value.callback(cfg, formattedInput[1:])
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 		}				
